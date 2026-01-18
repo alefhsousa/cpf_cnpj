@@ -57,9 +57,9 @@ pub fn validate(valor: &str) -> bool {
 
 /// Gera um CNPJ numérico válido (formato tradicional antes julho/2026)
 pub fn generate() -> String {
-    let mut rng = rand::thread_rng();
+    let mut rng = rand::rng();
 
-    let mut vec: Vec<usize> = (0..8).map(|_| rng.gen_range(0, 10)).collect();
+    let mut vec: Vec<usize> = (0..8).map(|_| rng.random_range(0..10)).collect();
 
     vec.extend(vec![0, 0, 0, 1]);
     vec.push(validate_first_digit(&vec));
@@ -73,13 +73,13 @@ pub fn generate() -> String {
 /// Estamos evitando usar o I,O,Q para não confundir as semelhanças entre I e 1 ou L, O, 0 e Q.
 /// Porém na função de validate consideramos todos
 pub fn generate_alphanumeric() -> String {
-    let mut rng = rand::thread_rng();
+    let mut rng = rand::rng();
     const CHARSET: &[u8] = b"0123456789ABCDEGHJKLMNPRSTUVWXYZ";
     let mut chars: Vec<char> = (0..8)
-        .map(|_| CHARSET[rng.gen_range(0, CHARSET.len())] as char)
+        .map(|_| CHARSET[rng.random_range(0..CHARSET.len())] as char)
         .collect();
 
-    chars.extend((0..4).map(|_| CHARSET[rng.gen_range(0, CHARSET.len())] as char));
+    chars.extend((0..4).map(|_| CHARSET[rng.random_range(0..CHARSET.len())] as char));
     let values: Vec<usize> = chars.iter().filter_map(|&c| char_to_value(c)).collect();
 
     let dv1 = validate_first_digit(&values);

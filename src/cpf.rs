@@ -34,9 +34,9 @@ pub fn validate(valor: &str) -> bool {
 }
 
 pub fn generate() -> String {
-    let mut rng = rand::thread_rng();
+    let mut rng = rand::rng();
 
-    let mut vec: Vec<usize> = (0..9).map(|_| rng.gen_range(0, 10)).collect();
+    let mut vec: Vec<usize> = (0..9).map(|_| rng.random_range(0..10)).collect();
 
     vec.push(validate_first_digit(&vec));
     vec.push(validate_second_digit(&vec));
